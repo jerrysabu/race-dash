@@ -17,6 +17,18 @@
                 </div>
             </div>
         </div>
+
+        <!-- <div class="mdc-top-app-bar__row mdc-top-app-bar__section--align-end">
+            <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <a href="new-data-studio.php"
+                    class="mdc-button mdc-button--raised filled-button--success mdc-ripple-upgraded"
+                    style="--mdc-ripple-fg-size: 56px; --mdc-ripple-fg-scale: 1.9693641816348801; --mdc-ripple-fg-translate-start: 10.0999755859375px, -2.79998779296875px; --mdc-ripple-fg-translate-end: 18.799999237060547px, -10px;">
+                    New
+                </a>
+            </div>
+            <div> -->
+
+
         <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end mdc-top-app-bar__section-right">
             <div class="menu-button-container menu-profile d-none d-md-block">
                 <button class="mdc-button mdc-menu-button">
