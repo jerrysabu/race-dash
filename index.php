@@ -46,7 +46,19 @@ if (strlen($_SESSION['alogin']) == 0) {
                         <div class="mdc-layout-grid__inner">
                             <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
                                 <div class="mdc-card p-0">
-                                    <h6 class="card-title card-padding pb-0">Striped Table</h6>
+                                    <h6 class="card-title card-padding pb-0">Log Book</h6>
+                                    <div class="mdc-top-app-bar__section mdc-top-app-bar__section-right"
+                                        style="justify-content: flex-end;">
+                                        <div class="menu-button-container menu-profile d-none d-md-block">
+
+                                            <button
+                                                class="mdc-button mdc-button--raised filled-button--success mdc-ripple-upgraded"
+                                                style="--mdc-ripple-fg-size: 56px; --mdc-ripple-fg-scale: 1.9693641816348801; --mdc-ripple-fg-translate-start: 10.0999755859375px, -2.79998779296875px; --mdc-ripple-fg-translate-end: 18.799999237060547px, -10px;">
+                                                Success
+                                            </button>
+                                        </div>
+                                    </div>
+
                                     <div class="table-responsive">
                                         <table class="table table-striped">
                                             <thead>
