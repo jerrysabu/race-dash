@@ -16,8 +16,8 @@
         </ul>
         <ul class="navbar-nav navbar-nav-right">
             <li class="nav-item dropdown d-none d-lg-block">
-                <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown"
-                    aria-expanded="false" href="#">+ Create New Project</a>
+                <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" aria-expanded="false"
+                    href="new-log.php">Create New Log</a>
 
             </li>
 
