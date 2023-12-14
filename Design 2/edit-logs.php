@@ -7,6 +7,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 } else {
     if (isset($_POST['submitBTN'])) {
        
+        $id = $_POST['id'];
         $subject = $_POST['subject'];
         $teacher = $_POST['teacher'];
         $episode = $_POST['episode'];
@@ -16,8 +17,9 @@ if (strlen($_SESSION['alogin']) == 0) {
         $editStatus="Pending";
         $okshot= $_POST['okshot'];
 
+        $sql = "UPDATE `data-table` SET subject='$subject',teacher='$teacher',episode='$episode',language='$language',topic='$topic',studioIn='$studioIn',editStatus='$editStatus',okshot='$okshot' where id='$id'";
         
-        $sql = "INSERT INTO `data-table`(subject,teacher,episode,language,topic,studioIn,editStatus,okshot) VALUES ('" . $subject . "','" . $teacher . "','" . $episode . "','" . $language . "','" . $topic . "','".$studioIn."','".$editStatus."','".$okshot."')";
+        // $sql = "INSERT INTO `data-table`(subject,teacher,episode,language,topic,studioIn,editStatus) VALUES ('" . $subject . "','" . $teacher . "','" . $episode . "','" . $language . "','" . $topic . "','".$studioIn."','".$editStatus."')";
         
         //  print_r($sql);
         // exit();
@@ -77,15 +79,10 @@ if (strlen($_SESSION['alogin']) == 0) {
                     <div class="col-12 grid-margin">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Add New Log</h4>
+                                <h4 class="card-title">Edit Log</h4>
                                 <form class="form-sample" method="POST">
                                     <!-- <p class="card-description"> Testination </p> -->
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Subject</label>
-                                                <div class="col-sm-9">
-                                                    <?php
+                                    <?php
                                                 $sessionname=$_SESSION['alogin'];
                                                 $sql = "SELECT `name` from users where username =  '$sessionname'";
                                                 // print_r($sql);
@@ -94,11 +91,28 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 $query->execute();
                                                 $rname = $query->fetchAll(PDO::FETCH_OBJ);
                                                 ?>
-                                                    <input type="hidden" id="username" name="username"
-                                                        value="<?php echo $rname[0]->name ?>" />
+                                    <input type="hidden" id="username" name="username"
+                                        value="<?php echo $rname[0]->name ?>" />
 
+                                    <?php
+                                        $id = $_GET['id'];
+                                        $sql = "SELECT * from  `data-table` where id=$id ";
+                                        // print_r($sql);
+                                        // exit();
+                                        $query = $dbh->prepare($sql);
+                                        $query->execute();
+                                        $userArr = $query->fetchAll(PDO::FETCH_OBJ);
+                                        if ($query->rowCount() > 0) {
+                                        ?>
+
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Subject</label>
+                                                <div class="col-sm-9">
                                                     <select class="form-control" name="subject" id="subject" required>
-                                                        <option disabled selected> -- select an option -- </option>
+                                                        <option selected> <?php echo $userArr[0]->subject; ?> </option>
                                                         <?php
                                                 $sql = "SELECT * from subject";
                                                 $query = $dbh->prepare($sql);
@@ -121,7 +135,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 <label class="col-sm-3 col-form-label">Teacher Name</label>
                                                 <div class="col-sm-9">
                                                     <select class="form-control" required name="teacher" id="teacher">
-                                                        <option disabled selected> -- select an option -- </option>
+                                                        <option selected> <?php echo $userArr[0]->teacher; ?> </option>
                                                         <?php
                                                 $sql = "SELECT * from teacher";
                                                 $query = $dbh->prepare($sql);
@@ -145,8 +159,11 @@ if (strlen($_SESSION['alogin']) == 0) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Episode</label>
                                                 <div class="col-sm-9">
+                                                    <input type="hidden" id="id" name="id"
+                                                        value="<?php echo htmlentities($userArr[0]->id); ?>" />
                                                     <input name="episode" id="episode" type="number"
-                                                        class="form-control" placeholder="1" required>
+                                                        value="<?php echo $userArr[0]->episode; ?>" class="form-control"
+                                                        placeholder="1" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,7 +172,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 <label class="col-sm-3 col-form-label">Language</label>
                                                 <div class="col-sm-9">
                                                     <select name="language" id="language" class="form-control" required>
-                                                        <option disabled selected> -- select an option -- </option>
+                                                        <option selected> <?php echo $userArr[0]->language; ?> </option>
                                                         <option>English</option>
                                                         <option>Malayalam</option>
 
@@ -167,19 +184,20 @@ if (strlen($_SESSION['alogin']) == 0) {
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Topic</label>
+                                                <label class="col-sm-3 col-form-label">Tpoic</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" name="topic" id="topic" class="form-control"
+                                                        value="<?php echo $userArr[0]->topic; ?>"
                                                         placeholder="Episode Topic" required>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Shot Number</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" name="okshot" id="okshot" class="form-control"
+                                                        value="<?php echo $userArr[0]->okshot; ?>"
                                                         placeholder="Episode Topic" required>
                                                 </div>
                                             </div>
@@ -189,6 +207,9 @@ if (strlen($_SESSION['alogin']) == 0) {
                                     <button id="submitBTN" name="submitBTN" type="submit"
                                         class="btn btn-primary mr-2">Submit</button>
                                     <button class="btn btn-dark">Cancel</button>
+
+                                    <?php }
+                                    ?>
                                 </form>
                             </div>
                         </div>

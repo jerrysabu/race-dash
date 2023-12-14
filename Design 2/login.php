@@ -9,7 +9,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 if (isset($_POST['login'])) {
     $username = ($_POST['username']);
     $password = md5($_POST['password']);
-    $sql = "SELECT * FROM users WHERE name='$username' AND password='$password'";
+    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
     // print_r($sql);
     // exit();
     $query = $dbh->prepare($sql);

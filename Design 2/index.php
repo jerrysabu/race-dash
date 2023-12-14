@@ -59,19 +59,32 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 <tr>
 
                                                     <th> Subject </th>
-                                                    <th> Teacher </th>
                                                     <th> Episode </th>
+                                                    <th> Shot Number </th>
+                                                    <th> Teacher </th>
                                                     <th> Language </th>
                                                     <th> Shoot On </th>
                                                     <th> Studio In </th>
                                                     <th> Episode Topic </th>
                                                     <th> Edit Status </th>
+                                                    <th> Edit </th>
+                                                    <!-- <th> Delete </th> -->
 
                                                 </tr>
                                             </thead>
                                             <tbody>
 
                                                 <?php
+                                                $sessionname=$_SESSION['alogin'];
+                                                $sql = "SELECT `name` from users where username =  '$sessionname'";
+                                                // print_r($sql);
+                                                // exit();
+                                                $query = $dbh->prepare($sql);
+                                                $query->execute();
+                                                $rname = $query->fetchAll(PDO::FETCH_OBJ);
+                                                $usernamedb = $rname[0]->name;
+
+
                                                 $sql = "SELECT * from `data-table`";
                                                 $query = $dbh->prepare($sql);
                                                 $query->execute();
@@ -84,13 +97,18 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 <tr>
 
                                                     <td> <?php echo $result->subject ?> </td>
+                                                    <td> <?php echo $result->episode ?></td>
+                                                    <td> <?php echo $result->okshot ?> </td>
                                                     <td> <?php echo $result->teacher ?> </td>
-                                                    <td> <?php echo $result->episode ?>7 </td>
                                                     <td> <?php echo $result->language ?> </td>
                                                     <td> <?php echo $result->date ?> </td>
                                                     <td> <?php echo $result->studioIn ?> </td>
                                                     <td> <?php echo $result->topic ?> </td>
                                                     <?php 
+                                                    $studioIN= $result->studioIn ;
+                                                 
+
+
                                                     $sts= $result->editStatus ;
                                                         if($sts=='Done'){?>
                                                     <td>
@@ -101,15 +119,23 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                     <td>
                                                         <div class="badge badge-outline-warning">Pending</div>
                                                     </td>
-                                                    <?php } ?>
+                                                    <?php }    if($studioIN==$usernamedb){
+ ?>
 
                                                     <td><button type="button"
+                                                            onclick="location.href = 'edit-logs.php?id=<?php echo   $result->id ?>';"
                                                             class="btn btn-success btn-rounded btn-icon">
                                                             <i class="mdi mdi-border-color"></i>
                                                         </button></td>
-                                                </tr>
+                                                    <?php }?>
 
-                                                <?php }
+                                                    <!-- <td><button type="button"
+                                                            class="btn btn-danger btn-rounded btn-icon">
+                                                            <i class="mdi mdi-delete-forever"></i>
+                                                        </button></td>
+                                                </tr> -->
+
+                                                    <?php }
                                                 }?>
                                             </tbody>
                                         </table>
