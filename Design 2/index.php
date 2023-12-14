@@ -64,81 +64,53 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                     <th> Language </th>
                                                     <th> Shoot On </th>
                                                     <th> Studio In </th>
-                                                    <th> Edited On </th>
+                                                    <th> Episode Topic </th>
                                                     <th> Edit Status </th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
+
+                                                <?php
+                                                $sql = "SELECT * from `data-table`";
+                                                $query = $dbh->prepare($sql);
+                                                $query->execute();
+                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                $cnt = 1;
+                                                if ($query->rowCount() > 0) {
+                                                    foreach ($results as $result) {
+                                                ?>
+
                                                 <tr>
 
-                                                    <td> French </td>
-                                                    <td> Dona </td>
-                                                    <td> 27 </td>
-                                                    <td> Malayalam </td>
-                                                    <td> 31/10/22-12:30pm </td>
-                                                    <td> Sojin </td>
-                                                    <td> 31/10/22-12:30pm </td>
+                                                    <td> <?php echo $result->subject ?> </td>
+                                                    <td> <?php echo $result->teacher ?> </td>
+                                                    <td> <?php echo $result->episode ?>7 </td>
+                                                    <td> <?php echo $result->language ?> </td>
+                                                    <td> <?php echo $result->date ?> </td>
+                                                    <td> <?php echo $result->studioIn ?> </td>
+                                                    <td> <?php echo $result->topic ?> </td>
+                                                    <?php 
+                                                    $sts= $result->editStatus ;
+                                                        if($sts=='Done'){?>
                                                     <td>
                                                         <div class="badge badge-outline-success">Done</div>
                                                     </td>
-                                                </tr>
-                                                <tr>
-
-
-                                                    <td> History </td>
-                                                    <td> Anna </td>
-                                                    <td> 15 </td>
-                                                    <td> English </td>
-                                                    <td> 31/10/22-12:30pm </td>
-                                                    <td> Sojin </td>
-                                                    <td> - </td>
+                                                    <?php }
+                                                    else if($sts=="Pending"){?>
                                                     <td>
                                                         <div class="badge badge-outline-warning">Pending</div>
                                                     </td>
+                                                    <?php } ?>
+
+                                                    <td><button type="button"
+                                                            class="btn btn-success btn-rounded btn-icon">
+                                                            <i class="mdi mdi-border-color"></i>
+                                                        </button></td>
                                                 </tr>
-                                                <tr>
 
-
-                                                    <td> Geography </td>
-                                                    <td> Amal </td>
-                                                    <td> 40 </td>
-                                                    <td> Malayalam </td>
-                                                    <td> 31/10/22-12:30pm </td>
-                                                    <td> Sojin </td>
-                                                    <td> - </td>
-                                                    <td>
-                                                        <div class="badge badge-outline-warning">Pending</div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-
-
-                                                    <td> Mathematics </td>
-                                                    <td> Bijeesh </td>
-                                                    <td> 15 </td>
-                                                    <td> Malayalam </td>
-                                                    <td> 31/10/22-12:30pm </td>
-                                                    <td> Sojin </td>
-                                                    <td> 31/10/22-12:30pm </td>
-                                                    <td>
-                                                        <div class="badge badge-outline-success">Done</div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-
-
-                                                    <td> Keraleeyam </td>
-                                                    <td> Jishnu </td>
-                                                    <td> 15 </td>
-                                                    <td> Malayalam </td>
-                                                    <td> 31/10/22-12:30pm </td>
-                                                    <td> Sojin </td>
-                                                    <td> 31/10/22-12:30pm </td>
-                                                    <td>
-                                                        <div class="badge badge-outline-success">Done</div>
-                                                    </td>
-                                                </tr>
+                                                <?php }
+                                                }?>
                                             </tbody>
                                         </table>
                                     </div>
