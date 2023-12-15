@@ -1,6 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
+date_default_timezone_set('Asia/Kolkata');
 include('includes/config.php');
 if (strlen($_SESSION['alogin']) == 0) {
     header('location:login.php');
@@ -76,22 +77,26 @@ if (strlen($_SESSION['alogin']) == 0) {
 
                                                 <?php
                                                 $sessionname=$_SESSION['alogin'];
-                                                $sql = "SELECT `name` from users where username =  '$sessionname'";
+                                                $sql = "SELECT * from users where username =  '$sessionname'";
                                                 // print_r($sql);
                                                 // exit();
                                                 $query = $dbh->prepare($sql);
                                                 $query->execute();
                                                 $rname = $query->fetchAll(PDO::FETCH_OBJ);
+                                                $usertype=$rname[0]->usertype;
                                                 $usernamedb = $rname[0]->name;
-
+// print_r($usertype);
+// exit();
 
                                                 $sql = "SELECT * from `data-table`";
                                                 $query = $dbh->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                 $cnt = 1;
+                                               
                                                 if ($query->rowCount() > 0) {
                                                     foreach ($results as $result) {
+                                                        $createddate=$result->createdTime;
                                                 ?>
 
                                                 <tr>
@@ -101,7 +106,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                     <td> <?php echo $result->okshot ?> </td>
                                                     <td> <?php echo $result->teacher ?> </td>
                                                     <td> <?php echo $result->language ?> </td>
-                                                    <td> <?php echo $result->date ?> </td>
+                                                    <td> <?php echo date('d/m/y , h:i', strtotime($createddate))?>
+                                                    </td>
                                                     <td> <?php echo $result->studioIn ?> </td>
                                                     <td> <?php echo $result->topic ?> </td>
                                                     <?php 
@@ -119,7 +125,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                     <td>
                                                         <div class="badge badge-outline-warning">Pending</div>
                                                     </td>
-                                                    <?php }    if($studioIN==$usernamedb){
+                                                    <?php }    if($studioIN==$usernamedb ||$usertype=='Editor'){
  ?>
 
                                                     <td><button type="button"

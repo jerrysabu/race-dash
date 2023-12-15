@@ -6,18 +6,48 @@ if (strlen($_SESSION['alogin']) == 0) {
     header('location:login.php');
 } else {
     if (isset($_POST['submitBTN'])) {
-       
+
+
+        $editedDate=$_POST['olddate'];
+
+        // print_r($_POST['usertype']);
+        // exit();
+
+if($_POST['usertype']=='Studio'){
+    $editStatus=$_POST['oldedit'];
+
+}else{
+        if($_POST['editstatus'] !== $_POST['oldedit']){
+            $editStatus=$_POST['editstatus'];
+            if($editStatus=='Done'){
+                date_default_timezone_set('Asia/Kolkata');
+                    $editedDate=date("y/m/d h:i:s");
+                }
+        }else{
+            $editStatus=$_POST['oldedit'];
+        }   
+    }
+
+
+        
+            if($_SESSION['alogin']!=$_POST['oldStudio'])
+            {
+                $studioIn=$_POST['oldStudio'];
+            }else{
+                $studioIn= $_POST['username'];
+            }
+
         $id = $_POST['id'];
         $subject = $_POST['subject'];
         $teacher = $_POST['teacher'];
         $episode = $_POST['episode'];
         $language = $_POST['language'];
         $topic = $_POST['topic'];
-        $studioIn= $_POST['username'];
-        $editStatus="Pending";
+       
+        // $editStatus="Pending";
         $okshot= $_POST['okshot'];
 
-        $sql = "UPDATE `data-table` SET subject='$subject',teacher='$teacher',episode='$episode',language='$language',topic='$topic',studioIn='$studioIn',editStatus='$editStatus',okshot='$okshot' where id='$id'";
+        $sql = "UPDATE `data-table` SET editedDate='$editedDate', editStatus='$editStatus',subject='$subject',teacher='$teacher',episode='$episode',language='$language',topic='$topic',studioIn='$studioIn',okshot='$okshot' where id='$id'";
         
         // $sql = "INSERT INTO `data-table`(subject,teacher,episode,language,topic,studioIn,editStatus) VALUES ('" . $subject . "','" . $teacher . "','" . $episode . "','" . $language . "','" . $topic . "','".$studioIn."','".$editStatus."')";
         
@@ -111,6 +141,9 @@ if (strlen($_SESSION['alogin']) == 0) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Subject</label>
                                                 <div class="col-sm-9">
+                                                    <input type="hidden" id="oldedit" name="oldedit"
+                                                        value="<?php echo $userArr[0]->editStatus ?>" />
+
                                                     <select class="form-control" name="subject" id="subject" required>
                                                         <option selected> <?php echo $userArr[0]->subject; ?> </option>
                                                         <?php
@@ -118,6 +151,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 $query = $dbh->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                               
                                                 $cnt = 1;
                                                 if ($query->rowCount() > 0) {
                                                     foreach ($results as $result) {
@@ -141,7 +175,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 $query = $dbh->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                                $cnt = 1;
+                                                                                               $cnt = 1;
                                                 if ($query->rowCount() > 0) {
                                                     foreach ($results as $result) {
                                                 ?>
@@ -161,6 +195,13 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 <div class="col-sm-9">
                                                     <input type="hidden" id="id" name="id"
                                                         value="<?php echo htmlentities($userArr[0]->id); ?>" />
+
+                                                    <input type="hidden" id="olddate" name="olddate"
+                                                        value="<?php echo htmlentities($userArr[0]->editedDate); ?>" />
+
+                                                    <input type="hidden" id="oldStudio" name="oldStudio"
+                                                        value="<?php echo htmlentities($userArr[0]->studioIn); ?>" />
+
                                                     <input name="episode" id="episode" type="number"
                                                         value="<?php echo $userArr[0]->episode; ?>" class="form-control"
                                                         placeholder="1" required>
@@ -204,6 +245,42 @@ if (strlen($_SESSION['alogin']) == 0) {
                                         </div>
 
                                     </div>
+                                    <?php 
+                                     $sessionname=$_SESSION['alogin'];
+                                     $sql = "SELECT * from users where username =  '$sessionname'";
+                                     // print_r($sql);
+                                     // exit();
+                                     $query = $dbh->prepare($sql);
+                                     $query->execute();
+                                     $rname = $query->fetchAll(PDO::FETCH_OBJ);
+                                     $usertype=$rname[0]->usertype;
+                                     ?>
+                                    <input type="hidden" id="usertype" name="usertype"
+                                        value="<?php echo $usertype ?>" />
+
+                                    <?php
+                                    if($usertype=='Editor'){?>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+
+                                                <label class="col-sm-3 col-form-label">Edit Status</label>
+                                                <div class="col-sm-9">
+                                                    <select name="editstatus" id="editstatus" class="form-control"
+                                                        required>
+                                                        <option selected> <?php echo $userArr[0]->editStatus; ?>
+                                                        </option>
+                                                        <option>Pending</option>
+                                                        <option>Done</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php }?>
+
                                     <button id="submitBTN" name="submitBTN" type="submit"
                                         class="btn btn-primary mr-2">Submit</button>
                                     <button class="btn btn-dark">Cancel</button>

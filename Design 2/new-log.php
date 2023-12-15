@@ -15,9 +15,13 @@ if (strlen($_SESSION['alogin']) == 0) {
         $studioIn= $_POST['username'];
         $editStatus="Pending";
         $okshot= $_POST['okshot'];
+        date_default_timezone_set('Asia/Kolkata');
+        $createdDate=date("y/m/d h:i:s");
+        // print_r($createdDate);
+        // exit();
 
         
-        $sql = "INSERT INTO `data-table`(subject,teacher,episode,language,topic,studioIn,editStatus,okshot) VALUES ('" . $subject . "','" . $teacher . "','" . $episode . "','" . $language . "','" . $topic . "','".$studioIn."','".$editStatus."','".$okshot."')";
+        $sql = "INSERT INTO `data-table`(subject,teacher,episode,language,topic,studioIn,editStatus,okshot,createdTime) VALUES ('" . $subject . "','" . $teacher . "','" . $episode . "','" . $language . "','" . $topic . "','".$studioIn."','".$editStatus."','".$okshot."','".$createdDate."')";
         
         //  print_r($sql);
         // exit();

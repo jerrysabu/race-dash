@@ -15,11 +15,19 @@ if (isset($_POST['login'])) {
     $query = $dbh->prepare($sql);
     $query->execute();
     $results = $query->fetchAll(PDO::FETCH_OBJ);
+    $type = $results[0]->usertype;
+
     if ($query->rowCount() > 0) {
+        // if($type=='Editor'){
+        //     print_r('hello jerry');
+        //     exit();
+        // }
+        // else{       
         $_SESSION['alogin'] =  $username;
         echo "<script> location.href='index.php'; </script>";
         // echo "<script type='text/javascript'> document.location ='announcements.php; </script>";
-    } else {
+    } 
+    else {
         echo "<script>alert('Invalid Password or Email!!');</script>";
     }
 }
